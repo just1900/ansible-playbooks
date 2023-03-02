@@ -27,6 +27,16 @@
   register: config_template
   no_log: True
 
+- name: Configure scrape config
+  copy:
+    src: prometheus.yml
+    dest: "{{ victoriametrics_prom_scrape_config }}"
+    mode: 0751
+    owner: "{{ victoriametrics_system_user }}"
+    group: "{{ victoriametrics_system_group }}"
+    # validate: "/usr/local/bin/victoria-metrics-prod-prod -dryRun -rule %s"
+    backup: yes
+
 - name: daemon-reload VictoriaMetrics service
   become: true
   notify: Restart VictoriaMetrics service

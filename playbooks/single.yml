@@ -4,3 +4,42 @@
   hosts: all
   roles:
     - single
+- name: setup vmalert
+  become: true
+  hosts: all
+  roles:
+    - vmalert
+- name: setup alertmanager
+  become: true
+  hosts: all
+  roles:
+    - alertmanager
+  vars:
+    alertmanager_version: latest
+    alertmanager_receivers:
+    - name: 'junkyard'
+    alertmanager_route:
+      group_by: ['alertname', 'cluster', 'service']
+      group_wait: 30s
+      group_interval: 5m
+      repeat_interval: 3h
+      receiver: 'junkyard'
+- name: setup grafana
+  become: true
+  hosts: all
+  roles:
+  - grafana
+  vars:
+    grafana_security:
+      admin_user: admin
+      admin_password: 'YOc3w/+fvpRsjtkJA8w='
+    grafana_datasources:
+    - name: "Prometheus"
+      type: "prometheus"
+      access: "proxy"
+      url: "http://localhost:8428"
+      isDefault: true
+      jsonData:
+        tlsAuth: false
+        tlsAuthWithCACert: false
+        tlsSkipVerify: true
