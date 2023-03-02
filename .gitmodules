@@ -1,0 +1,8 @@
+[submodule "roles/alertmanager"]
+	path = roles/alertmanager
+	url = https://github.com/cloudalchemy/ansible-alertmanager.git
+	branch = master
+[submodule "roles/grafana"]
+	path = roles/grafana
+	url = https://github.com/cloudalchemy/ansible-grafana.git
+	branch = master
